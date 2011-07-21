@@ -74,7 +74,14 @@ $(window).ready(function() {
   $("#bookmarklet").attr("href", Webxray.getBookmarkletURL(baseURI));
   
   Webxray.whenLoaded(function(ui) {
-    ui.styleInfoOverlay.setPropertyNames(["float", "font-family"]);
+    ui.styleInfoOverlay.setPropertyNames([
+      "float",
+      "font-family",
+      "font-size",
+      "color",
+      "background-color"
+    ]);
+    ui.focusedOverlay.set($("#bookmarklet")[0]);
     $(".curtain").hintify(ui, ".deletion.hint");
     $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
     $(".drop-cap").hintify(ui, ".style.hint");
