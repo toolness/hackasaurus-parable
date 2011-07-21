@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Goggles Tutorial</title>
+<script src="jquery.min.js"></script>
+<script class="get-bookmarklet-url" src="http://localhost:8000/static-files/src/get-bookmarklet-url.js"></script>
+<script>
+function updateBugsLeftText(n) {
+  var help = $(".help");
+  help.find(".remaining").text(n);
+  help.find(".singular").hide();
+  help.find(".plural").hide();
+  help.find(".not-done").hide();
+  help.find(".done").hide();
+  if (n == 0) {
+    help.find(".done").show();
+  } else {
+    help.find(".not-done").show();
+    if (n == 1) {
+      help.find(".singular").show();
+    } else {
+      help.find(".plural").show();
+    }
+  }
+}
+
+jQuery.fn.extend({
+  hintify: function hintify(ui, selector) {
+    this.each(function() {
+      var self = this;
+      var hint = $(selector).first().clone();
+      $(document.body).append(hint);
+      ui.focusedOverlay.on('change', function() {
+        var primary = ui.focusedOverlay.getPrimaryElement();
+        if (primary && primary == self) {
+          hint.fadeIn();
+        } else
+          hint.fadeOut();
+      });
+    });
+  }
+});
+
+$(window).ready(function() {
+  var bugs = [
+    function isFloatOnRightSide() {
+      return $(".drop-cap").css("float") == "left";
+    },
+    function isCurtainRemoved() {
+      return $(".curtain").length == 0;
+    },
+    function isTypoFixed() {
+      var text = $("p.needs-fixing").text();
+      return text.indexOf("weeb") == -1;
+    },
+    function isBrokenImageFixed() {
+      return $("img#supergirl").attr("src") == "images/supergirl.png";
+    }
+  ];
+  
+  function updateBugsLeft() {
+    var bugsLeft = 0;
+    bugs.forEach(function(isBugFixed) {
+      if (!isBugFixed())
+        bugsLeft++;
+    });
+    updateBugsLeftText(bugsLeft);
+  }
+  
+  setInterval(updateBugsLeft, 500);
+  updateBugsLeft();
+
+  var script = $(".get-bookmarklet-url");
+  var baseURI = script[0].src.match(/(.+)src\/get-bookmarklet-url\.js$/)[1];
+  $("#bookmarklet").attr("href", Webxray.getBookmarkletURL(baseURI));
+  
+  Webxray.whenLoaded(function(ui) {
+    ui.styleInfoOverlay.setPropertyNames(["float", "font-family"]);
+    $(".curtain").hintify(ui, ".deletion.hint");
+    $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
+    $(".drop-cap").hintify(ui, ".style.hint");
+  });
+});
+</script>
+<style>
+html, body {
+  font-family: Baskerville, Georgia, serif;
+  width: 640px;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+
+a#bookmarklet {
+  padding-left: 32px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  color: black;
+  border: 1px dotted gray;
+  text-decoration: none;
+  background-image: url(images/icon-goggles-tiny.png);
+  background-repeat: no-repeat;
+  background-position: 5px 4px;
+}
+
+a#bookmarklet:hover {
+  background-color: #f0f0f0;
+}
+
+h1 {
+  font-weight: normal;
+  text-align: center;
+}
+
+div.drop-cap {
+  font-size: 48px;
+  margin-top: -6px;
+  float: right;
+}
+
+div.help {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 500;
+  background: gray;
+  color: white;
+  width: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+}
+
+div.help a {
+  color: inherit;
+}
+
+img#hackasaur {
+  width: 400px;
+  height: 300px;
+}
+
+img#supergirl {
+  width: 300px;
+  height: 330px;
+}
+
+.image-holder {
+  text-align: center;
+}
+
+.curtain {
+  position: absolute;
+  width: 640px;
+  height: 250px;
+  background-color: white;
+}
+
+.remaining {
+  font-weight: bold;
+}
+
+.hint {
+  position: fixed;
+  text-align: center;
+  bottom: 40px;
+  padding: 10px;
+  left: 0px;
+  width: 100%;
+  background: black;
+  color: white;
+  font-size: 32px;
+  z-index: 500;
+  display: none;
+}
+
+kbd {
+  background-image: url("images/key.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  color: #555555;
+  display: inline-block;
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 20px;
+  height: 57px;
+  padding: 17px 0 0 1px;
+  text-align: center;
+  width: 57px;
+}
+</style>
+<div class="help">
+  <span class="not-done">Can you fix this page? There <span class="singular">is</span><span class="plural">are</span> <span class="remaining"></span> thing<span class="plural">s</span> wrong with it.</span>
+  <span class="done">Yay, you fixed the page! Now visit <a href="http://hackasaurus.org">hackasaurus.org</a> to learn how to use the goggles <em>anywhere</em> on the web.</span>
+</div>
+
+<div class="deletion hint">Tap <kbd>del</kbd> to remove an element.</div>
+
+<div class="remix hint">Tap <kbd>R</kbd> to change the source code of an element.</div>
+
+<div class="style hint">Hold <kbd>C</kbd> to view and change the style of an element.</div>
+
+<h1>The Parable of the Hackasaurus</h1>
+
+<div class="drop-cap">O</div><p>nce upon a time there lived a clever girl named Sue who liked to make things. She knit hats and built robots to wear them. But she didn't know anything about how the Web worked; it was as opaque as a television screen to her.</p>
+
+<p>One day a giant dinosaur appeared as she was exploring the web.</p>
+
+<div class="image-holder"><div class="curtain"></div><img id="hackasaur" src="images/hackasaur.jpg" draggable="false"></div>
+
+<p>“I’m going to show you how to hack the web!”, the dinosaur told Sue.</p>
+
+<p>“Hack?” Sue asked. “Isn’t that evil?”</p>
+
+<p>“No!” said the dinosaur. “Hacking can be used for good or ill. It is about tinkering with things to change how they work. Good hackers improve them and make them work better, but bad hackers make them worse.”</p>
+
+<p>“Wow!” said Sue. “I want to be a good hacker.”</p>
+
+<p>“Ok, then, try on these <a id="bookmarklet">Web X-Ray Goggles</a> and we'll get started!”</p>
+
+<p class="needs-fixing">Sue wore the goggles the dinosaur gave her, and suddenly she could see and change how everything on the weeb was put together.</p>
+
+<div class="image-holder"><img id="supergirl" src="imagees/supergirl.png"></div>
