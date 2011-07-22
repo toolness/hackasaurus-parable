@@ -1,6 +1,7 @@
 # The Parable of The Hackasaurus
 
 By Atul Varma
+
 Artwork by Jessica Klein
 
 ## Vision
