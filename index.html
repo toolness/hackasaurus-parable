@@ -48,25 +48,17 @@ jQuery.fn.extend({
 });
 
 function plantCssFloatHint(ui) {
-  var lastFocused = null;
   ui.styleInfoOverlay.on('lock', function(info) {
-    lastFocused = info.element;
-  });
-  $(".webxray-style-info-locked .webxray-row").live({
-    mouseover: function() {
-      if (lastFocused == $("div.drop-cap")[0]) {
+    if (info.element == $("div.drop-cap")[0])
+      $(".webxray-style-info-locked .webxray-row").hover(function() {
         var widget = ui.jQuery(this).data("propertyWidget");
-        var property = widget.name;
-        var valueCell = $(this).find(".webxray-value");
-        if (property == "float" &&
-            !widget.isBeingEdited() &&
-            valueCell.text() != "left")
-          $(".float.hint").fadeIn();
-      }
-    },
-    mouseout: function() {
-      $(".float.hint").fadeOut();
-    }
+        if (widget.name == "float" && !widget.isBeingEdited() &&
+            widget.getValue() != "left")
+          $(".float.hint").fadeIn();        
+      },
+      function() {
+        $(".float.hint").fadeOut();
+      });
   });
 }
 
