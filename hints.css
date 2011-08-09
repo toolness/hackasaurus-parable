@@ -1,0 +1,28 @@
+.hint {
+  position: fixed;
+  text-align: center;
+  bottom: 40px;
+  padding: 10px;
+  left: 0px;
+  width: 100%;
+  background: black;
+  color: white;
+  font-size: 32px;
+  z-index: 500;
+  display: none;
+  pointer-events: none;
+}
+
+kbd {
+  background-image: url("images/key.png");
+  background-position: left top;
+  background-repeat: no-repeat;
+  color: #555555;
+  display: inline-block;
+  font-family: Helvetica,Arial,sans-serif;
+  font-size: 20px;
+  height: 57px;
+  padding: 17px 0 0 1px;
+  text-align: center;
+  width: 57px;
+}

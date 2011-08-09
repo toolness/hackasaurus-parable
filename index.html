@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <title>The Parable of The Hackasaurus</title>
+<link rel="stylesheet" href="hints.css" class="hints">
 <script src="jquery.min.js"></script>
+<!-- <script class="get-bookmarklet-url" src="http://localhost:8000/static-files/src/get-bookmarklet-url.js"></script> -->
 <script class="get-bookmarklet-url" src="https://secure.toolness.com/webxray/src/get-bookmarklet-url.js"></script>
 <script>
 function updateBugsLeftText(n) {
@@ -21,6 +23,11 @@ function updateBugsLeftText(n) {
       help.find(".plural").show();
     }
   }
+}
+
+function absoluteURL(url) {
+  var a = $('<a></a>').attr('href', url);
+  return a[0].href;
 }
 
 jQuery.fn.extend({
@@ -74,6 +81,10 @@ $(window).ready(function() {
   $("#bookmarklet").attr("href", Webxray.getBookmarkletURL(baseURI));
   
   Webxray.whenLoaded(function(ui) {
+    ui.mixMaster.setDialogPageMods({
+      stylesheets: [$("link.hints")[0].href],
+      scripts: [absoluteURL('remix-dialog-pagemod.js')]
+    });
     ui.styleInfoOverlay.setPropertyNames([
       "float",
       "font-family",
@@ -165,39 +176,15 @@ img#supergirl {
 .remaining {
   font-weight: bold;
 }
-
-.hint {
-  position: fixed;
-  text-align: center;
-  bottom: 40px;
-  padding: 10px;
-  left: 0px;
-  width: 100%;
-  background: black;
-  color: white;
-  font-size: 32px;
-  z-index: 500;
-  display: none;
-  pointer-events: none;
-}
-
-kbd {
-  background-image: url("images/key.png");
-  background-position: left top;
-  background-repeat: no-repeat;
-  color: #555555;
-  display: inline-block;
-  font-family: Helvetica,Arial,sans-serif;
-  font-size: 20px;
-  height: 57px;
-  padding: 17px 0 0 1px;
-  text-align: center;
-  width: 57px;
-}
 </style>
 <div class="help">
   <span class="not-done">Can you fix this page? There <span class="singular">is</span><span class="plural">are</span> <span class="remaining"></span> thing<span class="plural">s</span> wrong with it.</span>
   <span class="done">Yay, you fixed the page! Now visit <a href="http://hackasaurus.org">hackasaurus.org</a> to learn how to use the goggles <em>anywhere</em> on the web.</span>
+</div>
+
+<div class="remix-dialog-hints">
+  <div class="attr hint">Click on an attribute value to edit it.</div>
+  <div class="txt hint">Click on a text node to edit it.</div>
 </div>
 
 <div class="deletion hint">Tap <kbd>del</kbd> to remove an element.</div>
