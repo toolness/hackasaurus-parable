@@ -49,18 +49,17 @@ jQuery.fn.extend({
 
 function plantCssFloatHint(ui) {
   var lastFocused = null;
-  ui.focusedOverlay.on('change', function() {
-    var primary = ui.focusedOverlay.getPrimaryElement();
-    if (primary)
-      lastFocused = primary;
+  ui.styleInfoOverlay.on('lock', function(info) {
+    lastFocused = info.element;
   });
   $(".webxray-style-info-locked .webxray-row").live({
     mouseover: function() {
       if (lastFocused == $("div.drop-cap")[0]) {
-        var property = ui.jQuery(this).data("propertyWidget").name;
+        var widget = ui.jQuery(this).data("propertyWidget");
+        var property = widget.name;
         var valueCell = $(this).find(".webxray-value");
         if (property == "float" &&
-            $(this).find("form").length == 0 &&
+            !widget.isBeingEdited() &&
             valueCell.text() != "left")
           $(".float.hint").fadeIn();
       }
