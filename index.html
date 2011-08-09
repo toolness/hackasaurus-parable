@@ -47,6 +47,30 @@ jQuery.fn.extend({
   }
 });
 
+function plantCssFloatHint(ui) {
+  var lastFocused = null;
+  ui.focusedOverlay.on('change', function() {
+    var primary = ui.focusedOverlay.getPrimaryElement();
+    if (primary)
+      lastFocused = primary;
+  });
+  $(".webxray-style-info-locked .webxray-row").live({
+    mouseover: function() {
+      if (lastFocused == $("div.drop-cap")[0]) {
+        var property = ui.jQuery(this).data("propertyWidget").name;
+        var valueCell = $(this).find(".webxray-value");
+        if (property == "float" &&
+            $(this).find("form").length == 0 &&
+            valueCell.text() != "left")
+          $(".float.hint").fadeIn();
+      }
+    },
+    mouseout: function() {
+      $(".float.hint").fadeOut();
+    }
+  });
+}
+
 $(window).ready(function() {
   var bugs = [
     function isFloatOnRightSide() {
@@ -96,6 +120,7 @@ $(window).ready(function() {
     $(".curtain").hintify(ui, ".deletion.hint");
     $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
     $(".drop-cap").hintify(ui, ".style.hint");
+    plantCssFloatHint(ui);
   });
 });
 </script>
@@ -192,6 +217,8 @@ img#supergirl {
 <div class="remix hint">Tap <kbd>R</kbd> to change the source code of an element.</div>
 
 <div class="style hint">Press and hold <kbd>C</kbd> to view the style of an element.</div>
+
+<div class="float hint">Click to edit a style property.</div>
 
 <h1>The Parable of The Hackasaurus</h1>
 
