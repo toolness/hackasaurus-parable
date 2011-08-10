@@ -124,17 +124,17 @@ $(window).ready(function() {
         if (!bug.hasBeenFixedBefore) {
           bug.hasBeenFixedBefore = true;
           if (bug.achievement)
-            bug.achievement.slideDown().delay(2500).slideUp();
+            bug.achievement.delay(500).slideDown().delay(2500).slideUp();
         }
       }
     });
     updateBugsLeftText(bugsLeft);
   }
   
-  setInterval(updateBugsLeft, 500);
   updateBugsLeft();
 
   window.webxrayWhenGogglesLoad = function(ui) {
+    ui.commandManager.on('state-change', updateBugsLeft);
     ui.mixMaster.setDialogPageMods({
       stylesheets: [$("link.hints")[0].href],
       scripts: [absoluteURL('remix-dialog-pagemod.js')]
