@@ -3,8 +3,6 @@
 <title>The Parable of The Hackasaurus</title>
 <link rel="stylesheet" href="hints.css" class="hints">
 <script src="jquery.min.js"></script>
-<!-- <script class="get-bookmarklet-url" src="http://localhost:8000/static-files/src/get-bookmarklet-url.js"></script> -->
-<script class="get-bookmarklet-url" src="https://secure.toolness.com/webxray/src/get-bookmarklet-url.js"></script>
 <script>
 function updateBugsLeftText(n) {
   var help = $(".help");
@@ -23,6 +21,21 @@ function updateBugsLeftText(n) {
       help.find(".plural").show();
     }
   }
+}
+
+function loadScripts(scripts, cb) {
+  scripts = scripts.slice().reverse();
+
+  function loadNextScript() {
+    if (scripts.length == 0)
+      return cb();
+    var scriptTag = document.createElement('script');
+    scriptTag.setAttribute('src', scripts.pop());
+    scriptTag.onload = loadNextScript;
+    document.body.appendChild(scriptTag);
+  }
+
+  loadNextScript();
 }
 
 function absoluteURL(url) {
@@ -91,27 +104,29 @@ $(window).ready(function() {
   setInterval(updateBugsLeft, 500);
   updateBugsLeft();
 
-  var script = $(".get-bookmarklet-url");
-  var baseURI = script[0].src.match(/(.+)src\/get-bookmarklet-url\.js$/)[1];
-  $("#bookmarklet").attr("href", Webxray.getBookmarkletURL(baseURI));
-  
-  Webxray.whenLoaded(function(ui) {
-    ui.mixMaster.setDialogPageMods({
-      stylesheets: [$("link.hints")[0].href],
-      scripts: [absoluteURL('remix-dialog-pagemod.js')]
+  var baseURI = window.location.hash == "#local" ?
+                "http://localhost:8000/static-files/" :
+                "https://secure.toolness.com/webxray/";
+  loadScripts([baseURI + "src/get-bookmarklet-url.js"], function() {
+    $("#bookmarklet").attr("href", Webxray.getBookmarkletURL(baseURI));
+    Webxray.whenLoaded(function(ui) {
+      ui.mixMaster.setDialogPageMods({
+        stylesheets: [$("link.hints")[0].href],
+        scripts: [absoluteURL('remix-dialog-pagemod.js')]
+      });
+      ui.styleInfoOverlay.setPropertyNames([
+        "float",
+        "font-family",
+        "font-size",
+        "color",
+        "background-color"
+      ]);
+      ui.focusedOverlay.set($("#bookmarklet")[0]);
+      $(".curtain").hintify(ui, ".deletion.hint");
+      $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
+      $(".drop-cap").hintify(ui, ".style.hint");
+      plantCssFloatHint(ui);
     });
-    ui.styleInfoOverlay.setPropertyNames([
-      "float",
-      "font-family",
-      "font-size",
-      "color",
-      "background-color"
-    ]);
-    ui.focusedOverlay.set($("#bookmarklet")[0]);
-    $(".curtain").hintify(ui, ".deletion.hint");
-    $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
-    $(".drop-cap").hintify(ui, ".style.hint");
-    plantCssFloatHint(ui);
   });
 });
 </script>
