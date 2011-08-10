@@ -23,21 +23,6 @@ function updateBugsLeftText(n) {
   }
 }
 
-function loadScripts(scripts, cb) {
-  scripts = scripts.slice().reverse();
-
-  function loadNextScript() {
-    if (scripts.length == 0)
-      return cb();
-    var scriptTag = document.createElement('script');
-    scriptTag.setAttribute('src', scripts.pop());
-    scriptTag.onload = loadNextScript;
-    document.body.appendChild(scriptTag);
-  }
-
-  loadNextScript();
-}
-
 function absoluteURL(url) {
   var a = $('<a></a>').attr('href', url);
   return a[0].href;
@@ -104,30 +89,24 @@ $(window).ready(function() {
   setInterval(updateBugsLeft, 500);
   updateBugsLeft();
 
-  var baseURI = window.location.hash == "#local" ?
-                "http://localhost:8000/static-files/" :
-                "https://secure.toolness.com/webxray/";
-  loadScripts([baseURI + "src/get-bookmarklet-url.js"], function() {
-    $("#bookmarklet").attr("href", Webxray.getBookmarkletURL(baseURI));
-    Webxray.whenLoaded(function(ui) {
-      ui.mixMaster.setDialogPageMods({
-        stylesheets: [$("link.hints")[0].href],
-        scripts: [absoluteURL('remix-dialog-pagemod.js')]
-      });
-      ui.styleInfoOverlay.setPropertyNames([
-        "float",
-        "font-family",
-        "font-size",
-        "color",
-        "background-color"
-      ]);
-      ui.focusedOverlay.set($("#bookmarklet")[0]);
-      $(".curtain").hintify(ui, ".deletion.hint");
-      $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
-      $(".drop-cap").hintify(ui, ".style.hint");
-      plantCssFloatHint(ui);
+  window.webxrayWhenGogglesLoad = function(ui) {
+    ui.mixMaster.setDialogPageMods({
+      stylesheets: [$("link.hints")[0].href],
+      scripts: [absoluteURL('remix-dialog-pagemod.js')]
     });
-  });
+    ui.styleInfoOverlay.setPropertyNames([
+      "float",
+      "font-family",
+      "font-size",
+      "color",
+      "background-color"
+    ]);
+    ui.focusedOverlay.set($("#bookmarklet")[0]);
+    $(".curtain").hintify(ui, ".deletion.hint");
+    $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
+    $(".drop-cap").hintify(ui, ".style.hint");
+    plantCssFloatHint(ui);    
+  };
 });
 </script>
 <style>
@@ -242,7 +221,7 @@ img#supergirl {
 
 <p>“Wow!” said Sue. “I want to be a good hacker.”</p>
 
-<p>“Ok, then, try on these <a id="bookmarklet">Web X-Ray Goggles</a> and we'll get started!”</p>
+<p>“Ok, then, try on these <a id="bookmarklet" href="javascript:(function(){var%20script=document.createElement('script');script.src='https://secure.toolness.com/webxray/webxray.js';script.className='webxray';document.head.appendChild(script);})();">Web X-Ray Goggles</a> and we'll get started!”</p>
 
 <p class="needs-fixing">Sue wore the goggles the dinosaur gave her, and suddenly she could see and change how everything on the weeb was put together.</p>
 
