@@ -89,29 +89,14 @@ function plantCssOverlayHints(ui) {
 $(window).ready(function() {
   var bugs = [
     {
-      isFixed: function isFloatOnCorrectSide() {
-        return $(".drop-cap").css("float") == "left";
+      isFixed: function() {
+        var half1 = $("img[src='images/half1.jpg']");
+        var half2 = $("img[src='images/half2.jpg']");
+        var pos1 = half1.offset();
+        var pos2 = half2.offset();
+        return (pos1 && pos2 && pos1.left < pos2.left);
       },
-      achievement: $("#style-hacker.achievement")
-    },
-    {
-      isFixed: function isCurtainRemoved() {
-        return $(".curtain").length == 0;
-      },
-      achievement: $("#deleter.achievement")
-    },
-    {
-      isFixed: function isTypoFixed() {
-        var text = $("p.needs-fixing").text();
-        return text.indexOf("weeb") == -1;
-      },
-      achievement: $("#typo-fixer.achievement")
-    },
-    {
-      isFixed: function isBrokenImageFixed() {
-        return $("img#supergirl").attr("src") == "images/supergirl.png";
-      },
-      achievement: $("#url-hacker.achievement")
+      achievement: $("#image-hacker.achievement")
     }
   ];
 
@@ -146,7 +131,7 @@ $(window).ready(function() {
       "color",
       "background-color"
     ]);
-    ui.focusedOverlay.set($("#bookmarklet")[0]);
+    //ui.focusedOverlay.set($("#bookmarklet")[0]);
     $(".curtain").hintify(ui, ".deletion.hint");
     $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
     plantCssFloatHint(ui);
@@ -156,10 +141,11 @@ $(window).ready(function() {
 </script>
 <style>
 html, body {
-  font-family: Baskerville, Georgia, serif;
+  font-family: "Helvetica Neue";
   width: 640px;
   margin: 0 auto;
   padding-top: 1em;
+  background: black;
 }
 
 a#bookmarklet {
@@ -195,7 +181,7 @@ div.help {
   top: 0px;
   left: 0px;
   z-index: 500;
-  background: gray;
+  background: inherit;
   color: white;
   width: 100%;
   padding-top: 0.5em;
@@ -265,9 +251,9 @@ img#supergirl {
   <span class="done">Yay, you fixed the page! Now visit <a href="http://hackasaurus.org">hackasaurus.org</a> to learn how to use the goggles <em>anywhere</em> on the web.</span>
 </div>
 
-<div id="url-hacker" class="achievement">
+<div id="image-hacker" class="achievement">
   <h3>Achievement Unlocked</h3>
-  <p>URL Hacker</p>
+  <p>Image Hacker</p>
 </div>
 
 <div id="deleter" class="achievement">
@@ -300,24 +286,4 @@ img#supergirl {
 
 <div class="pin hint">While holding <kbd>C</kbd>, tap the space bar to make changes to an element's style.</div>
 
-<h1>The Parable of The Hackasaurus</h1>
-
-<div class="drop-cap">O</div><p>nce upon a time there lived a clever girl named Sue who liked to make things. She knit hats and built robots to wear them. But she didn't know anything about how the Web worked; it was as opaque as a television screen to her.</p>
-
-<p>One day a giant dinosaur appeared as she was exploring the web.</p>
-
-<div class="image-holder"><div class="curtain"></div><img id="hackasaur" src="images/hackasaur.jpg" alt="Picture of Hackasaur" draggable="false"></div>
-
-<p>“I’m going to show you how to hack the web!”, the dinosaur told Sue.</p>
-
-<p>“Hack?” Sue asked. “Isn’t that evil?”</p>
-
-<p>“No!” said the dinosaur. “Hacking can be used for good or ill. It is about tinkering with things to change how they work. Good hackers improve them and make them work better, but bad hackers make them worse.”</p>
-
-<p>“Wow!” said Sue. “I want to be a good hacker.”</p>
-
-<p>“Ok, then, try on these <a id="bookmarklet" href="javascript:(function(){var%20script=document.createElement('script');script.src='https://secure.toolness.com/webxray/webxray.js';script.className='webxray';document.head.appendChild(script);})();">Web X-Ray Goggles</a> and we'll get started!”</p>
-
-<p class="needs-fixing">Sue wore the goggles the dinosaur gave her, and suddenly she could see and change how everything on the weeb was put together.</p>
-
-<div class="image-holder"><img id="supergirl" src="imagees/supergirl.png" alt="Picture of Sue wearing goggles"></div>
+<img src="images/half2.jpg"><img src="images/half1.jpg">
