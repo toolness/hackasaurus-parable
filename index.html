@@ -48,7 +48,7 @@ jQuery.fn.extend({
 function plantCssFloatHint(ui) {
   ui.styleInfoOverlay.on('lock', function(info) {
     if (info.element == $("div.drop-cap")[0])
-      $(".webxray-style-info-locked .webxray-row").hover(function() {
+      $(".webxray-row").hover(function() {
         var widget = ui.jQuery(this).data("propertyWidget");
         if (widget.name == "float" && !widget.isBeingEdited() &&
             widget.getValue() != "left")
