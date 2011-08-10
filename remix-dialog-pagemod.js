@@ -5,7 +5,7 @@
 
   function hintify(options) {
     var filter = options.filter || function() { return true; };
-    $(options.domField).live({
+    $(options.part).live({
       mouseover: function() {
         var parent = $(this).closest(".element");
         var linkedNode = parent.data("linked-node");
@@ -20,14 +20,14 @@
   }
 
   hintify({
-    domField: ".element .text",
     target: "p.needs-fixing",
+    part: ".element .text",
     hint: hints.find(".txt")
   });
 
   hintify({
-    domField: ".attributes .value",
     target: "img#supergirl",
+    part: ".attributes .value",
     filter: function() {
       return $(this).prev(".name").text() == "src";
     },
