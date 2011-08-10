@@ -3,31 +3,34 @@
   var hints = preview.find(".remix-dialog-hints").clone();
   $(document.body).append(hints.show());
 
-  $(".element .text").live({
-    mouseover: function() {
-      var parent = $(this).closest(".element");
-      var linkedNode = parent.data("linked-node");
-      if (linkedNode == preview.find("p.needs-fixing")[0]) {
-        hints.find(".txt").fadeIn();
+  function hintify(options) {
+    var filter = options.filter || function() { return true; };
+    $(options.domField).live({
+      mouseover: function() {
+        var parent = $(this).closest(".element");
+        var linkedNode = parent.data("linked-node");
+        if (linkedNode == preview.find(options.target)[0] &&
+            filter.call(this))
+          options.hint.fadeIn();
+      },
+      mouseout: function() {
+        options.hint.fadeOut();
       }
-    },
-    mouseout: function() {
-      hints.find(".txt").fadeOut();
-    }
+    });
+  }
+
+  hintify({
+    domField: ".element .text",
+    target: "p.needs-fixing",
+    hint: hints.find(".txt")
   });
 
-  $(".attributes .value").live({
-    mouseover: function() {
-      var parent = $(this).closest(".element");
-      var linkedNode = parent.data("linked-node");
-      var attr = $(this).prev(".name").text();
-      if (linkedNode == preview.find("img#supergirl")[0] &&
-          attr == "src") {
-        hints.find(".attr").fadeIn();
-      }
+  hintify({
+    domField: ".attributes .value",
+    target: "img#supergirl",
+    filter: function() {
+      return $(this).prev(".name").text() == "src";
     },
-    mouseout: function() {
-      hints.find(".attr").fadeOut();
-    }
+    hint: hints.find(".attr")
   });
 })();
