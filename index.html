@@ -60,6 +60,32 @@ function plantCssFloatHint(ui) {
   });
 }
 
+function plantCssOverlayHints(ui) {
+  function showOrHideHint() {
+    var primary = ui.focusedOverlay.getPrimaryElement();
+    if (primary &&
+        primary == $("div.drop-cap")[0]) {
+      if (ui.styleInfoOverlay.isVisible()) {
+        if (!ui.styleInfoOverlay.isLocked()) {
+          $(".pin.hint").fadeIn();          
+          $(".style.hint").hide();
+          return;
+        }
+      } else {
+        $(".style.hint").fadeIn();
+        $(".pin.hint").hide();
+        return;
+      }
+    }
+    $(".pin.hint").fadeOut();
+    $(".style.hint").fadeOut();
+  }
+
+  ui.focusedOverlay.on('change', showOrHideHint);
+  ui.styleInfoOverlay.on('show', showOrHideHint);
+  ui.styleInfoOverlay.on('hide', showOrHideHint);
+}
+
 $(window).ready(function() {
   var bugs = [
     function isFloatOnRightSide() {
@@ -104,8 +130,8 @@ $(window).ready(function() {
     ui.focusedOverlay.set($("#bookmarklet")[0]);
     $(".curtain").hintify(ui, ".deletion.hint");
     $("p.needs-fixing,img#supergirl").hintify(ui, ".remix.hint");
-    $(".drop-cap").hintify(ui, ".style.hint");
-    plantCssFloatHint(ui);    
+    plantCssFloatHint(ui);
+    plantCssOverlayHints(ui);
   };
 });
 </script>
@@ -204,6 +230,8 @@ img#supergirl {
 <div class="style hint">Press and hold <kbd>C</kbd> to view the style of an element.</div>
 
 <div class="float hint">Click to edit a style property.</div>
+
+<div class="pin hint">While holding <kbd>C</kbd>, tap the space bar to make changes to an element's style.</div>
 
 <h1>The Parable of The Hackasaurus</h1>
 
