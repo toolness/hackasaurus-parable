@@ -123,13 +123,8 @@ $(window).ready(function() {
       else {
         if (!bug.hasBeenFixedBefore) {
           bug.hasBeenFixedBefore = true;
-          if (bug.achievement) {
-            bug.achievement.slideDown(function() {
-              setTimeout(function() {
-                bug.achievement.slideUp();
-              }, 2500);
-            });
-          }
+          if (bug.achievement)
+            bug.achievement.slideDown().delay(2500).slideUp();
         }
       }
     });
