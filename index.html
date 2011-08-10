@@ -88,26 +88,50 @@ function plantCssOverlayHints(ui) {
 
 $(window).ready(function() {
   var bugs = [
-    function isFloatOnRightSide() {
-      return $(".drop-cap").css("float") == "left";
+    {
+      isFixed: function isFloatOnCorrectSide() {
+        return $(".drop-cap").css("float") == "left";
+      },
+      achievement: $("#style-hacker.achievement")
     },
-    function isCurtainRemoved() {
-      return $(".curtain").length == 0;
+    {
+      isFixed: function isCurtainRemoved() {
+        return $(".curtain").length == 0;
+      },
+      achievement: $("#deleter.achievement")
     },
-    function isTypoFixed() {
-      var text = $("p.needs-fixing").text();
-      return text.indexOf("weeb") == -1;
+    {
+      isFixed: function isTypoFixed() {
+        var text = $("p.needs-fixing").text();
+        return text.indexOf("weeb") == -1;
+      },
+      achievement: $("#typo-fixer.achievement")
     },
-    function isBrokenImageFixed() {
-      return $("img#supergirl").attr("src") == "images/supergirl.png";
+    {
+      isFixed: function isBrokenImageFixed() {
+        return $("img#supergirl").attr("src") == "images/supergirl.png";
+      },
+      achievement: $("#url-hacker.achievement")
     }
   ];
-  
+
   function updateBugsLeft() {
     var bugsLeft = 0;
-    bugs.forEach(function(isBugFixed) {
-      if (!isBugFixed())
+    bugs.forEach(function(bug) {
+      if (!bug.isFixed())
         bugsLeft++;
+      else {
+        if (!bug.hasBeenFixedBefore) {
+          bug.hasBeenFixedBefore = true;
+          if (bug.achievement) {
+            bug.achievement.slideDown(function() {
+              setTimeout(function() {
+                bug.achievement.slideUp();
+              }, 2500);
+            });
+          }
+        }
+      }
     });
     updateBugsLeftText(bugsLeft);
   }
@@ -212,10 +236,58 @@ img#supergirl {
 .remaining {
   font-weight: bold;
 }
+
+.achievement {
+  display: none;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  font-family: "Helvetica Neue", Helvetica;
+  font-weight: bold;
+  padding: 10px;
+  text-transform: uppercase;
+/*  background: rgba(255, 255, 255, 0.75); */
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 5000;
+}
+
+.achievement h3 {
+  color: gray;
+  margin: 0;
+  padding: 0;
+  font-size: 10pt;
+}
+
+.achievement p {
+  color: #B2E725;
+  margin: 0;
+  padding: 0;
+  font-size: 24pt;
+}
 </style>
 <div class="help">
   <span class="not-done">Can you fix this page? There <span class="singular">is</span><span class="plural">are</span> <span class="remaining"></span> thing<span class="plural">s</span> wrong with it.</span>
   <span class="done">Yay, you fixed the page! Now visit <a href="http://hackasaurus.org">hackasaurus.org</a> to learn how to use the goggles <em>anywhere</em> on the web.</span>
+</div>
+
+<div id="url-hacker" class="achievement">
+  <h3>Achievement Unlocked</h3>
+  <p>URL Hacker</p>
+</div>
+
+<div id="deleter" class="achievement">
+  <h3>Achievement Unlocked</h3>
+  <p>Deleter</p>
+</div>
+
+<div id="style-hacker" class="achievement">
+  <h3>Achievement Unlocked</h3>
+  <p>Style Hacker</p>
+</div>
+
+<div id="typo-fixer" class="achievement">
+  <h3>Achievement Unlocked</h3>
+  <p>Typo Fixer</p>
 </div>
 
 <div class="remix-dialog-hints">
