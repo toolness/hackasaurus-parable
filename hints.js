@@ -29,17 +29,43 @@ var HintFilters = {
   },
   notFixed: function(bug) {
     return function() {
-      return !bug.isFixed();
+      return !bug.isFixed(this.context);
     };
   }
 };
 
-function HintManager(ui, filters) {
+var RemixDialogHintFilters = {
+  matches: function(selector) {
+    return function(ui, target) {
+      var parent = $(target).closest(".element");
+      if (parent) {
+        var linkedNode = parent.data("linked-node");
+        return $(linkedNode).is(selector);
+      }
+      return false;
+    };
+  },
+  isOnAttributeValue: function(attr) {
+    return function(ui, target) {
+      return ($(target).is(".attributes .value") &&
+              $(target).prev(".name").text() == attr);      
+    };
+  },
+  isOnTextNode: function() {
+    return function(ui, target) {
+      return $(target).is(".element .text");
+    };
+  },
+  notFixed: HintFilters.notFixed
+};
+
+function HintManager(ui, filters, context) {
   var hints = [];
   
   filters = filters || HintFilters;
   
   var self = {
+    context: context,
     plant: function(options) {
       var content = $(options.content).clone();
       var filterList = [];
@@ -64,7 +90,8 @@ function HintManager(ui, filters) {
     refresh: function refresh(currentTarget) {
       hints.forEach(function(hint) {
         for (var i = 0; i < hint.filterList.length; i++) {
-          if (!hint.filterList[i](ui, currentTarget)) {
+          var filter = hint.filterList[i];
+          if (!filter.call(self, ui, currentTarget)) {
             hint.content.hide();
             return;
           }
