@@ -21,6 +21,11 @@
       return function(ui, target) {
         return $(target).is(".element .text");
       };
+    },
+    notFixed: function(bug) {
+      return function() {
+        return !bug.isFixed(preview);
+      };
     }
   };
   var hints = HintManager(null, filters);
@@ -31,7 +36,8 @@
     content: ".txt.hint",
     when: {
       matches: "p.needs-fixing",
-      isOnTextNode: true
+      isOnTextNode: true,
+      notFixed: bugs.typo
     }
   });
 
@@ -39,7 +45,8 @@
     content: ".attr.hint",
     when: {
       matches: "img#supergirl",
-      isOnAttributeValue: "id"
+      isOnAttributeValue: "src",
+      notFixed: bugs.brokenImage
     }
   });
 
