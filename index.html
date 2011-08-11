@@ -169,76 +169,6 @@ html, body {
   padding-top: 1em;
 }
 
-a#bookmarklet {
-  padding-left: 32px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-right: 6px;
-  color: black;
-  border: 1px dotted gray;
-  text-decoration: none;
-  background-image: url(images/icon-goggles-tiny.png);
-  background-repeat: no-repeat;
-  background-position: 5px 4px;
-}
-
-a#bookmarklet:hover {
-  background-color: #f0f0f0;
-}
-
-h1 {
-  font-weight: normal;
-  text-align: center;
-}
-
-div.drop-cap {
-  font-size: 48px;
-  margin-top: -6px;
-  float: right;
-}
-
-div.help {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  z-index: 500;
-  background: gray;
-  color: white;
-  width: 100%;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  text-align: center;
-}
-
-div.help a {
-  color: inherit;
-}
-
-img#hackasaur {
-  width: 400px;
-  height: 300px;
-}
-
-img#supergirl {
-  width: 300px;
-  height: 330px;
-}
-
-.image-holder {
-  text-align: center;
-}
-
-.curtain {
-  position: absolute;
-  width: 640px;
-  height: 250px;
-  background-color: white;
-}
-
-.remaining {
-  font-weight: bold;
-}
-
 .achievement {
   display: none;
   position: fixed;
@@ -266,46 +196,120 @@ img#supergirl {
   padding: 0;
   font-size: 24pt;
 }
+
+a#bookmarklet {
+  padding-left: 32px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  color: black;
+  border: 1px dotted gray;
+  text-decoration: none;
+  background-image: url(images/icon-goggles-tiny.png);
+  background-repeat: no-repeat;
+  background-position: 5px 4px;
+}
+
+a#bookmarklet:hover {
+  background-color: #f0f0f0;
+}
+
+div.help {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 500;
+  background: gray;
+  color: white;
+  width: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+}
+
+div.help a {
+  color: inherit;
+}
+
+.remaining {
+  font-weight: bold;
+}
+
+h1 {
+  font-weight: normal;
+  text-align: center;
+}
+
+div.drop-cap {
+  font-size: 48px;
+  margin-top: -6px;
+  float: right;
+}
+
+img#hackasaur {
+  width: 400px;
+  height: 300px;
+}
+
+img#supergirl {
+  width: 300px;
+  height: 330px;
+}
+
+.image-holder {
+  text-align: center;
+}
+
+.curtain {
+  position: absolute;
+  width: 640px;
+  height: 250px;
+  background-color: white;
+}
 </style>
 <div class="help">
   <span class="not-done">Can you fix this page? There <span class="singular">is</span><span class="plural">are</span> <span class="remaining"></span> thing<span class="plural">s</span> wrong with it.</span>
   <span class="done">Yay, you fixed the page! Now visit <a href="http://hackasaurus.org">hackasaurus.org</a> to learn how to use the goggles <em>anywhere</em> on the web.</span>
 </div>
 
-<div id="url-hacker" class="achievement">
-  <h3>Achievement Unlocked</h3>
-  <p>URL Hacker</p>
+<div class="achievements">
+  <div id="url-hacker" class="achievement">
+    <h3>Achievement Unlocked</h3>
+    <p>URL Hacker</p>
+  </div>
+
+  <div id="deleter" class="achievement">
+    <h3>Achievement Unlocked</h3>
+    <p>Deleter</p>
+  </div>
+
+  <div id="style-hacker" class="achievement">
+    <h3>Achievement Unlocked</h3>
+    <p>Style Hacker</p>
+  </div>
+
+  <div id="typo-fixer" class="achievement">
+    <h3>Achievement Unlocked</h3>
+    <p>Copy Editor</p>
+  </div>
 </div>
 
-<div id="deleter" class="achievement">
-  <h3>Achievement Unlocked</h3>
-  <p>Deleter</p>
+<div class="hints">
+  <div class="remix-dialog-hints">
+    <div class="attr hint">Click on an attribute value to edit it.</div>
+    <div class="txt hint">Click on a text node to edit it.</div>
+  </div>
+
+  <div class="deletion hint">Tap <kbd>del</kbd> to remove an element.</div>
+
+  <div class="remix hint">Tap <kbd>R</kbd> to change the source code of an element.</div>
+
+  <div class="style hint">Press and hold <kbd>C</kbd> to view the style of an element.</div>
+
+  <div class="float hint">Click to edit a style property.</div>
+
+  <div class="pin hint">While holding <kbd>C</kbd>, tap the space bar to make changes to an element's style.</div>
 </div>
-
-<div id="style-hacker" class="achievement">
-  <h3>Achievement Unlocked</h3>
-  <p>Style Hacker</p>
-</div>
-
-<div id="typo-fixer" class="achievement">
-  <h3>Achievement Unlocked</h3>
-  <p>Copy Editor</p>
-</div>
-
-<div class="remix-dialog-hints">
-  <div class="attr hint">Click on an attribute value to edit it.</div>
-  <div class="txt hint">Click on a text node to edit it.</div>
-</div>
-
-<div class="deletion hint">Tap <kbd>del</kbd> to remove an element.</div>
-
-<div class="remix hint">Tap <kbd>R</kbd> to change the source code of an element.</div>
-
-<div class="style hint">Press and hold <kbd>C</kbd> to view the style of an element.</div>
-
-<div class="float hint">Click to edit a style property.</div>
-
-<div class="pin hint">While holding <kbd>C</kbd>, tap the space bar to make changes to an element's style.</div>
 
 <h1>The Parable of The Hackasaurus</h1>
 
