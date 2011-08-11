@@ -130,6 +130,31 @@ function HintManager(ui, filters) {
   return self;
 }
 
+function BugManager(bugs) {
+  var self = {
+    update: function update() {
+      var bugsLeft = 0;
+      for (var name in bugs) {
+        var bug = bugs[name];
+        if (!bug.isFixed())
+          bugsLeft++;
+        else {
+          if (!bug.hasBeenFixedBefore) {
+            bug.hasBeenFixedBefore = true;
+            if (bug.achievement)
+              bug.achievement.delay(500).slideDown().delay(2500).slideUp();
+          }
+        }
+      }
+      updateBugsLeftText(bugsLeft);
+    }
+  };
+  
+  self.update();
+  
+  return self;
+}
+
 $(window).ready(function() {
   var bugs = {
     dropCap: {
@@ -158,25 +183,8 @@ $(window).ready(function() {
       achievement: $("#url-hacker.achievement")
     }
   };
-
-  function updateBugsLeft() {
-    var bugsLeft = 0;
-    for (var name in bugs) {
-      var bug = bugs[name];
-      if (!bug.isFixed())
-        bugsLeft++;
-      else {
-        if (!bug.hasBeenFixedBefore) {
-          bug.hasBeenFixedBefore = true;
-          if (bug.achievement)
-            bug.achievement.delay(500).slideDown().delay(2500).slideUp();
-        }
-      }
-    }
-    updateBugsLeftText(bugsLeft);
-  }
   
-  updateBugsLeft();
+  var bugManager = BugManager(bugs);
 
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
@@ -233,7 +241,7 @@ $(window).ready(function() {
       }
     });
     
-    ui.commandManager.on('state-change', updateBugsLeft);
+    ui.commandManager.on('state-change', bugManager.update);
     ui.mixMaster.setDialogPageMods({
       stylesheets: [$("link.hints")[0].href],
       scripts: [absoluteURL('remix-dialog-pagemod.js')]
