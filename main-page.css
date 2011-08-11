@@ -1,0 +1,104 @@
+html, body {
+  font-family: Baskerville, Georgia, serif;
+  width: 640px;
+  margin: 0 auto;
+  padding-top: 1em;
+}
+
+.achievement {
+  display: none;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  font-family: "Helvetica Neue", Helvetica;
+  font-weight: bold;
+  padding: 10px;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 5000;
+  pointer-events: none;
+}
+
+.achievement h3 {
+  color: #e0e0e0;
+  margin: 0;
+  padding: 0;
+  font-size: 10pt;
+}
+
+.achievement p {
+  color: #B2E725;
+  margin: 0;
+  padding: 0;
+  font-size: 24pt;
+}
+
+a#bookmarklet {
+  padding-left: 32px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 6px;
+  color: black;
+  border: 1px dotted gray;
+  text-decoration: none;
+  background-image: url(images/icon-goggles-tiny.png);
+  background-repeat: no-repeat;
+  background-position: 5px 4px;
+}
+
+a#bookmarklet:hover {
+  background-color: #f0f0f0;
+}
+
+div.help {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 500;
+  background: gray;
+  color: white;
+  width: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+}
+
+div.help a {
+  color: inherit;
+}
+
+.remaining {
+  font-weight: bold;
+}
+
+h1 {
+  font-weight: normal;
+  text-align: center;
+}
+
+div.drop-cap {
+  font-size: 48px;
+  margin-top: -6px;
+  float: right;
+}
+
+img#hackasaur {
+  width: 400px;
+  height: 300px;
+}
+
+img#supergirl {
+  width: 300px;
+  height: 330px;
+}
+
+.image-holder {
+  text-align: center;
+}
+
+.curtain {
+  position: absolute;
+  width: 640px;
+  height: 250px;
+  background-color: white;
+}
