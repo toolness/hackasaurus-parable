@@ -3,6 +3,8 @@
 <title>The Parable of The Hackasaurus</title>
 <link rel="stylesheet" href="hints.css" class="hints">
 <script src="jquery.min.js"></script>
+<script src="hints.js"></script>
+<script src="bugs.js"></script>
 <script>
 function updateBugsLeftText(n) {
   var help = $(".help");
@@ -28,91 +30,12 @@ function absoluteURL(url) {
   return a[0].href;
 }
 
-var HintFilters = {
-  matches: function(selector) {
-    return function(ui, target) {
-      var query = $(selector);
-      return target && $(target).is(selector);
-    };
-  },
-  isOnCssProperty: function(name) {
-    return function(ui, target) {
-      var rowHover = $("div.webxray-row:hover");
-      if (rowHover.length) {
-        var row = rowHover[0];
-        var widget = ui.jQuery(row).data("propertyWidget");
-        if (widget.name == name && !widget.isBeingEdited())
-          return true;
-      }
-      return false;
-    };
-  },
-  isStyleOverlayLocked: function(isLocked) {
-    return function(ui, target) {
-      return (ui.styleInfoOverlay.isLocked() == isLocked);
-    };
-  },
-  isStyleOverlayVisible: function(isVisible) {
-    return function(ui, target) {
-      return (ui.styleInfoOverlay.isVisible() == isVisible);
-    };
-  },
-  notFixed: function(bug) {
-    return function() {
-      return !bug.isFixed();
-    };
-  }
-};
-
-function HintManager(ui, filters) {
-  var hints = [];
+function installHints(ui, hints) {
   var currentTarget = null;
-  
-  filters = filters || HintFilters;
-  
-  var self = {
-    plant: function(options) {
-      var content = $(options.content).clone();
-      var filterList = [];
-
-      for (var filterName in options.when) {
-        var arg = options.when[filterName];
-        var filter = filters[filterName];
-        
-        if (!filter)
-          throw new Error("unknown 'when' option: " + filterName);
-
-        filterList.push(filter(arg));
-      }
-      
-      $(document.body).append(content);
-      content.hide();
-      hints.push({
-        content: content,
-        filterList: filterList
-      });
-    }
-  };
-  
-  function showOrHideHint() {
-    hints.forEach(function(hint) {
-      for (var i = 0; i < hint.filterList.length; i++) {
-        if (!hint.filterList[i](ui, currentTarget)) {
-          hint.content.hide();
-          return;
-        }
-      };
-      hint.content.fadeIn();
-    });
-  }
   
   function genericChange() {
     currentTarget = ui.focusedOverlay.getPrimaryElement();
-    showOrHideHint();
-  }
-  
-  function domEventChange() {
-    showOrHideHint();
+    hints.refresh(currentTarget);
   }
   
   ui.focusedOverlay.on('change', genericChange);
@@ -120,17 +43,21 @@ function HintManager(ui, filters) {
   ui.styleInfoOverlay.on('hide', genericChange);
   ui.styleInfoOverlay.on('lock', function(info) {
     currentTarget = info.element;
-    showOrHideHint();
-  });
-  $(".webxray-row").live({
-    mouseover: showOrHideHint,
-    mouseout: showOrHideHint
+    hints.refresh(currentTarget);
   });
 
-  return self;
+  function domEventChange() {
+    hints.refresh(currentTarget);
+  }
+
+  $(".webxray-row").live({
+    mouseover: domEventChange,
+    mouseout: domEventChange
+  });
 }
 
-function BugManager(bugs) {
+function BugDisplay(bugs) {
+  var fixedBefore = {};
   var self = {
     update: function update() {
       var bugsLeft = 0;
@@ -139,10 +66,10 @@ function BugManager(bugs) {
         if (!bug.isFixed())
           bugsLeft++;
         else {
-          if (!bug.hasBeenFixedBefore) {
-            bug.hasBeenFixedBefore = true;
+          if (!(name in fixedBefore)) {
+            fixedBefore[name] = true;
             if (bug.achievement)
-              bug.achievement.delay(500).slideDown().delay(2500).slideUp();
+              $(bug.achievement).delay(500).slideDown().delay(2500).slideUp();
           }
         }
       }
@@ -155,36 +82,8 @@ function BugManager(bugs) {
   return self;
 }
 
-$(window).ready(function() {
-  var bugs = {
-    dropCap: {
-      isFixed: function isFloatOnCorrectSide() {
-        return $(".drop-cap").css("float") == "left";
-      },
-      achievement: $("#style-hacker.achievement")
-    },
-    curtain: {
-      isFixed: function isCurtainRemoved() {
-        return $(".curtain").length == 0;
-      },
-      achievement: $("#deleter.achievement")
-    },
-    typo: {
-      isFixed: function isTypoFixed() {
-        var text = $("p.needs-fixing").text();
-        return text.indexOf("weeb") == -1;
-      },
-      achievement: $("#typo-fixer.achievement")
-    },
-    brokenImage: {
-      isFixed: function isBrokenImageFixed() {
-        return $("img#supergirl").attr("src") == "images/supergirl.png";
-      },
-      achievement: $("#url-hacker.achievement")
-    }
-  };
-  
-  var bugManager = BugManager(bugs);
+$(window).ready(function() {  
+  var bugDisplay = BugDisplay(bugs);
 
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
@@ -240,8 +139,9 @@ $(window).ready(function() {
         notFixed: bugs.dropCap
       }
     });
-    
-    ui.commandManager.on('state-change', bugManager.update);
+
+    installHints(ui, hints);
+    ui.commandManager.on('state-change', bugDisplay.update);
     ui.mixMaster.setDialogPageMods({
       stylesheets: [$("link.hints")[0].href],
       scripts: [absoluteURL('remix-dialog-pagemod.js')]
