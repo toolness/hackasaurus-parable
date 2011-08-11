@@ -56,6 +56,11 @@ var HintFilters = {
     return function(ui, target) {
       return (ui.styleInfoOverlay.isVisible() == isVisible);
     };
+  },
+  not: function(filter) {
+    return function(ui, target) {
+      return !filter(ui, target);
+    };
   }
 };
 
@@ -112,37 +117,38 @@ function HintManager(ui) {
 }
 
 $(window).ready(function() {
-  var bugs = [
-    {
+  var bugs = {
+    dropCap: {
       isFixed: function isFloatOnCorrectSide() {
         return $(".drop-cap").css("float") == "left";
       },
       achievement: $("#style-hacker.achievement")
     },
-    {
+    curtain: {
       isFixed: function isCurtainRemoved() {
         return $(".curtain").length == 0;
       },
       achievement: $("#deleter.achievement")
     },
-    {
+    typo: {
       isFixed: function isTypoFixed() {
         var text = $("p.needs-fixing").text();
         return text.indexOf("weeb") == -1;
       },
       achievement: $("#typo-fixer.achievement")
     },
-    {
+    brokenImage: {
       isFixed: function isBrokenImageFixed() {
         return $("img#supergirl").attr("src") == "images/supergirl.png";
       },
       achievement: $("#url-hacker.achievement")
     }
-  ];
+  };
 
   function updateBugsLeft() {
     var bugsLeft = 0;
-    bugs.forEach(function(bug) {
+    for (var name in bugs) {
+      var bug = bugs[name];
       if (!bug.isFixed())
         bugsLeft++;
       else {
@@ -152,7 +158,7 @@ $(window).ready(function() {
             bug.achievement.delay(500).slideDown().delay(2500).slideUp();
         }
       }
-    });
+    }
     updateBugsLeftText(bugsLeft);
   }
   
@@ -163,24 +169,34 @@ $(window).ready(function() {
 
     hints.plant({
       content: ".deletion.hint",
-      when: [HintFilters.matches(".curtain")]
+      when: [
+        HintFilters.matches(".curtain"),
+        HintFilters.not(bugs.curtain.isFixed)
+      ]
     });
 
     hints.plant({
       content: ".remix.hint",
-      when: [HintFilters.matches("p.needs-fixing")]
+      when: [
+        HintFilters.matches("p.needs-fixing"),
+        HintFilters.not(bugs.typo.isFixed)
+      ]
     });
 
     hints.plant({
       content: ".remix.hint",
-      when: [HintFilters.matches("img#supergirl")]
+      when: [
+        HintFilters.matches("img#supergirl"),
+        HintFilters.not(bugs.brokenImage.isFixed)
+      ]
     });
     
     hints.plant({
       content: ".float.hint",
       when: [
         HintFilters.matches("div.drop-cap"),
-        HintFilters.isOnCssProperty("float")
+        HintFilters.isOnCssProperty("float"),
+        HintFilters.not(bugs.dropCap.isFixed)
       ]
     });
     
@@ -189,7 +205,8 @@ $(window).ready(function() {
       when: [
         HintFilters.matches("div.drop-cap"),
         HintFilters.isStyleOverlayVisible(true),
-        HintFilters.isStyleOverlayLocked(false)
+        HintFilters.isStyleOverlayLocked(false),
+        HintFilters.not(bugs.dropCap.isFixed)
       ]
     });
 
@@ -197,7 +214,8 @@ $(window).ready(function() {
       content: ".style.hint",
       when: [
         HintFilters.matches("div.drop-cap"),
-        HintFilters.isStyleOverlayVisible(false)
+        HintFilters.isStyleOverlayVisible(false),
+        HintFilters.not(bugs.dropCap.isFixed)
       ]
     });
     
