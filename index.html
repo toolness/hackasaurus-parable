@@ -144,7 +144,11 @@ $(window).ready(function() {
     ui.commandManager.on('state-change', bugDisplay.update);
     ui.mixMaster.setDialogPageMods({
       stylesheets: [$("link.hints")[0].href],
-      scripts: [absoluteURL('remix-dialog-pagemod.js')]
+      scripts: [
+        absoluteURL('bugs.js'),
+        absoluteURL('hints.js'),
+        absoluteURL('remix-dialog-pagemod.js')
+      ]
     });
     ui.styleInfoOverlay.setPropertyNames([
       "float",
