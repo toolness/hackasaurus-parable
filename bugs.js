@@ -25,3 +25,79 @@ var bugs = {
     achievement: "#url-hacker.achievement"
   }
 };
+
+var bugHints = [
+  {
+    content: ".deletion.hint",
+    when: {
+      matches: ".curtain",
+      notFixed: bugs.curtain
+    }
+  },
+  {
+    content: ".remix.hint",
+    when: {
+      matches: "p.needs-fixing",
+      notFixed: bugs.typo
+    }
+  },
+  {
+    content: ".remix.hint",
+    when: {
+      matches: "img#supergirl",
+      notFixed: bugs.brokenImage
+    }
+  },
+  {
+    content: ".float.hint",
+    when: {
+      matches: "div.drop-cap",
+      isOnCssProperty: "float",
+      notFixed: bugs.dropCap
+    }
+  },
+  {
+    content: ".pin.hint",
+    when: {
+      matches: "div.drop-cap",
+      isStyleOverlayVisible: true,
+      isStyleOverlayLocked: false,
+      notFixed: bugs.dropCap
+    }
+  },
+  {
+    content: ".style.hint",
+    when: {
+      matches: "div.drop-cap",
+      isStyleOverlayVisible: false,
+      notFixed: bugs.dropCap
+    }
+  }
+];
+
+var remixDialogBugHints = [
+  {
+    content: ".txt.hint",
+    when: {
+      matches: "p.needs-fixing",
+      isOnTextNode: true,
+      notFixed: bugs.typo
+    }
+  },
+  {
+    content: ".attr.hint",
+    when: {
+      matches: "img#supergirl",
+      isOnAttributeValue: "src",
+      notFixed: bugs.brokenImage
+    }
+  }
+];
+
+var stylePropertiesToShow = [
+  "float",
+  "font-family",
+  "font-size",
+  "color",
+  "background-color"
+];

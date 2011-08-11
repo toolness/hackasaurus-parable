@@ -80,75 +80,18 @@ $(window).ready(function() {
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
 
-    hints.plant({
-      content: ".deletion.hint",
-      when: {
-        matches: ".curtain",
-        notFixed: bugs.curtain
-      }
-    });
-
-    hints.plant({
-      content: ".remix.hint",
-      when: {
-        matches: "p.needs-fixing",
-        notFixed: bugs.typo
-      }
-    });
-
-    hints.plant({
-      content: ".remix.hint",
-      when: {
-        matches: "img#supergirl",
-        notFixed: bugs.brokenImage
-      }
-    });
-    
-    hints.plant({
-      content: ".float.hint",
-      when: {
-        matches: "div.drop-cap",
-        isOnCssProperty: "float",
-        notFixed: bugs.dropCap
-      }
-    });
-    
-    hints.plant({
-      content: ".pin.hint",
-      when: {
-        matches: "div.drop-cap",
-        isStyleOverlayVisible: true,
-        isStyleOverlayLocked: false,
-        notFixed: bugs.dropCap
-      }
-    });
-
-    hints.plant({
-      content: ".style.hint",
-      when: {
-        matches: "div.drop-cap",
-        isStyleOverlayVisible: false,
-        notFixed: bugs.dropCap
-      }
-    });
-
+    bugHints.forEach(hints.plant);
     installHints(ui, hints);
     ui.commandManager.on('state-change', bugDisplay.update);
     ui.mixMaster.setDialogPageMods({
-      stylesheets: [$("link.hints")[0].href],
+      stylesheets: [absoluteURL('hints.css')],
       scripts: [
         absoluteURL('bugs.js'),
         absoluteURL('hints.js'),
         absoluteURL('remix-dialog-pagemod.js')
       ]
     });
-    ui.styleInfoOverlay.setPropertyNames([
-      "float",
-      "font-family",
-      "font-size",
-      "color",
-      "background-color"
-    ]);
+    ui.styleInfoOverlay.setPropertyNames(stylePropertiesToShow);
     ui.focusedOverlay.set($("#bookmarklet")[0]);
   };
 });
