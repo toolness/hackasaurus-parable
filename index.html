@@ -57,9 +57,9 @@ var HintFilters = {
       return (ui.styleInfoOverlay.isVisible() == isVisible);
     };
   },
-  not: function(filter) {
-    return function(ui, target) {
-      return !filter(ui, target);
+  notFixed: function(bug) {
+    return function() {
+      return !bug.isFixed();
     };
   }
 };
@@ -185,7 +185,7 @@ $(window).ready(function() {
       content: ".deletion.hint",
       when: {
         matches: ".curtain",
-        not: bugs.curtain.isFixed
+        notFixed: bugs.curtain
       }
     });
 
@@ -193,7 +193,7 @@ $(window).ready(function() {
       content: ".remix.hint",
       when: {
         matches: "p.needs-fixing",
-        not: bugs.typo.isFixed
+        notFixed: bugs.typo
       }
     });
 
@@ -201,7 +201,7 @@ $(window).ready(function() {
       content: ".remix.hint",
       when: {
         matches: "img#supergirl",
-        not: bugs.brokenImage.isFixed
+        notFixed: bugs.brokenImage
       }
     });
     
@@ -210,7 +210,7 @@ $(window).ready(function() {
       when: {
         matches: "div.drop-cap",
         isOnCssProperty: "float",
-        not: bugs.dropCap.isFixed
+        notFixed: bugs.dropCap
       }
     });
     
@@ -220,7 +220,7 @@ $(window).ready(function() {
         matches: "div.drop-cap",
         isStyleOverlayVisible: true,
         isStyleOverlayLocked: false,
-        not: bugs.dropCap.isFixed
+        notFixed: bugs.dropCap
       }
     });
 
@@ -229,7 +229,7 @@ $(window).ready(function() {
       when: {
         matches: "div.drop-cap",
         isStyleOverlayVisible: false,
-        not: bugs.dropCap.isFixed
+        notFixed: bugs.dropCap
       }
     });
     
