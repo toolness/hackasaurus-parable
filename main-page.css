@@ -1,9 +1,4 @@
-html, body {
-  font-family: Baskerville, Georgia, serif;
-  width: 640px;
-  margin: 0 auto;
-  padding-top: 1em;
-}
+/* Achievements */
 
 .achievement {
   display: none;
@@ -33,6 +28,8 @@ html, body {
   font-size: 24pt;
 }
 
+/* The goggles bookmarklet */
+
 a#bookmarklet {
   padding-left: 32px;
   padding-top: 6px;
@@ -49,6 +46,8 @@ a#bookmarklet {
 a#bookmarklet:hover {
   background-color: #f0f0f0;
 }
+
+/* The help bar at the top of the page */
 
 div.help {
   position: fixed;
@@ -67,8 +66,17 @@ div.help a {
   color: inherit;
 }
 
-.remaining {
+div.help .remaining {
   font-weight: bold;
+}
+
+/* The parable story */
+
+html, body {
+  font-family: Baskerville, Georgia, serif;
+  width: 640px;
+  margin: 0 auto;
+  padding-top: 1em;
 }
 
 h1 {
