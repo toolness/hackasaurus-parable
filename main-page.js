@@ -100,6 +100,11 @@ function buildPageMods(extraMods) {
 $(window).ready(function() {  
   var bugDisplay = BugDisplay(bugs);
 
+  if (navigator.platform.match(/^Mac/))
+    $(".non-mac").hide();
+  else
+    $(".mac").hide();
+
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
 
