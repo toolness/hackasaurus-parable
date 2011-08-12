@@ -32,6 +32,20 @@ This makes it possible to have a game that actually "unlocks" features of the
 goggles as the player progresses through it and masters individual concepts
 one by one, allowing for manageable learning curves.
 
+## Implementation
+
+The parable "embeds" the goggles. Changing the parable and remixing it to make
+your own missions should be reasonably easy: just edit [index.html][] or
+[bugs.js][].
+
+Note that some scripts, including `bugs.js`, are actually injected
+into the remix dialog using a mechanism similar to [GreaseMonkey][].
+This makes their behavior a bit unusual, but I've tried commenting
+their code to set developer expectations.
+
+  [index.html]: https://github.com/toolness/hackasaurus-parable/blob/gh-pages/index.html
+  [bugs.js]: https://github.com/toolness/hackasaurus-parable/blob/gh-pages/bugs.js
+  
 ## Next Steps
 
 I personally love the idea of a sort of "Aesop's Fables for the Web", where
