@@ -101,3 +101,8 @@ var stylePropertiesToShow = [
   "color",
   "background-color"
 ];
+
+var remixDialogPageMods = {
+  stylesheets: [],
+  scripts: ['bugs.js']
+};

@@ -79,18 +79,26 @@ $(window).ready(function() {
 
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
+    var baseRemixDialogPageMods = {
+      stylesheets: ['hints.css'],
+      scripts: [
+        'hints.js',
+        'remix-dialog-pagemod.js'
+      ]
+    };
+    var finalMods = {stylesheets: [], scripts: []};
 
     bugHints.forEach(hints.plant);
     installHints(ui, hints);
     ui.commandManager.on('state-change', bugDisplay.update);
-    ui.mixMaster.setDialogPageMods({
-      stylesheets: [absoluteURL('hints.css')],
-      scripts: [
-        absoluteURL('bugs.js'),
-        absoluteURL('hints.js'),
-        absoluteURL('remix-dialog-pagemod.js')
-      ]
+    ['stylesheets', 'scripts'].forEach(function(modType) {
+      [remixDialogPageMods,
+       baseRemixDialogPageMods].forEach(function(mods) {
+         var absURLs = mods[modType].map(absoluteURL);
+         finalMods[modType] = finalMods[modType].concat(absURLs);
+       });
     });
+    ui.mixMaster.setDialogPageMods(finalMods);
     ui.styleInfoOverlay.setPropertyNames(stylePropertiesToShow);
     ui.focusedOverlay.set($("#bookmarklet")[0]);
   };
