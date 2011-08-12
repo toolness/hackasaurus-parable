@@ -45,7 +45,8 @@ their code to set developer expectations.
 
   [index.html]: https://github.com/toolness/hackasaurus-parable/blob/gh-pages/index.html
   [bugs.js]: https://github.com/toolness/hackasaurus-parable/blob/gh-pages/bugs.js
-  
+  [GreaseMonkey]: http://en.wikipedia.org/wiki/Greasemonkey
+
 ## Next Steps
 
 I personally love the idea of a sort of "Aesop's Fables for the Web", where
