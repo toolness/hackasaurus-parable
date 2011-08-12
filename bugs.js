@@ -104,5 +104,5 @@ var stylePropertiesToShow = [
 
 var remixDialogPageMods = {
   stylesheets: [],
-  scripts: ['bugs.js']
+  scripts: []
 };

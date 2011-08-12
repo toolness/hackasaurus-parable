@@ -74,31 +74,45 @@ function BugDisplay(bugs) {
   return self;
 }
 
+jQuery.fn.extend({
+  attrArray: function(attr) {
+    return $.makeArray(this.map(function() {
+      return $(this).attr(attr);
+    }));
+  }
+});
+
+function buildPageMods(remixDialogPageMods) {
+  var baseRemixDialogPageMods = {
+    stylesheets: $("link.include-in-remix-dialog").attrArray('href'),
+    scripts: $("script.include-in-remix-dialog").attrArray('src')
+  };
+  var finalMods = {stylesheets: [], scripts: []};
+
+  ['stylesheets', 'scripts'].forEach(function(modType) {
+    [baseRemixDialogPageMods,
+     remixDialogPageMods].forEach(function(mods) {
+       var absURLs = mods[modType].map(absoluteURL);
+       finalMods[modType] = finalMods[modType].concat(absURLs);
+     });
+  });
+
+  finalMods.scripts.push(absoluteURL('remix-dialog-pagemod.js'));
+  console.log(JSON.stringify(finalMods));
+
+  return finalMods;
+}
+
 $(window).ready(function() {  
   var bugDisplay = BugDisplay(bugs);
 
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
-    var baseRemixDialogPageMods = {
-      stylesheets: ['hints.css'],
-      scripts: [
-        'hints.js',
-        'remix-dialog-pagemod.js'
-      ]
-    };
-    var finalMods = {stylesheets: [], scripts: []};
 
     bugHints.forEach(hints.plant);
     installHints(ui, hints);
     ui.commandManager.on('state-change', bugDisplay.update);
-    ['stylesheets', 'scripts'].forEach(function(modType) {
-      [remixDialogPageMods,
-       baseRemixDialogPageMods].forEach(function(mods) {
-         var absURLs = mods[modType].map(absoluteURL);
-         finalMods[modType] = finalMods[modType].concat(absURLs);
-       });
-    });
-    ui.mixMaster.setDialogPageMods(finalMods);
+    ui.mixMaster.setDialogPageMods(buildPageMods(remixDialogPageMods));
     ui.styleInfoOverlay.setPropertyNames(stylePropertiesToShow);
     ui.focusedOverlay.set($("#bookmarklet")[0]);
   };
