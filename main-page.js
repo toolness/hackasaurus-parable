@@ -75,32 +75,26 @@ function BugDisplay(bugs) {
 }
 
 jQuery.fn.extend({
-  attrArray: function(attr) {
+  propArray: function(prop) {
     return $.makeArray(this.map(function() {
-      return $(this).attr(attr);
+      return this[prop];
     }));
   }
 });
 
-function buildPageMods(remixDialogPageMods) {
-  var baseRemixDialogPageMods = {
-    stylesheets: $("link.include-in-remix-dialog").attrArray('href'),
-    scripts: $("script.include-in-remix-dialog").attrArray('src')
+function buildPageMods(extraMods) {
+  var mods = {
+    stylesheets: $("link.include-in-remix-dialog").propArray('href'),
+    scripts: $("script.include-in-remix-dialog").propArray('src')
   };
-  var finalMods = {stylesheets: [], scripts: []};
 
   ['stylesheets', 'scripts'].forEach(function(modType) {
-    [baseRemixDialogPageMods,
-     remixDialogPageMods].forEach(function(mods) {
-       var absURLs = mods[modType].map(absoluteURL);
-       finalMods[modType] = finalMods[modType].concat(absURLs);
-     });
+    var absURLs = extraMods[modType].map(absoluteURL);
+    mods[modType] = mods[modType].concat(absURLs);
   });
 
-  finalMods.scripts.push(absoluteURL('remix-dialog-pagemod.js'));
-  console.log(JSON.stringify(finalMods));
-
-  return finalMods;
+  mods.scripts.push(absoluteURL('remix-dialog-pagemod.js'));
+  return mods;
 }
 
 $(window).ready(function() {  
