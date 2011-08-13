@@ -47,6 +47,12 @@ a#bookmarklet:hover {
   background-color: #f0f0f0;
 }
 
+a#bookmarklet.loading {
+  background-image: url(images/throbber.gif);
+  background-position: 8px 6px;
+  background-color: #f0f0f0;
+}
+
 /* The help bar at the top of the page */
 
 div.help {

@@ -105,9 +105,14 @@ $(window).ready(function() {
   else
     $(".mac").hide();
 
+  $("#bookmarklet").click(function() {
+    $(this).addClass("loading");
+  });
+  
   window.webxrayWhenGogglesLoad = function(ui) {
     var hints = HintManager(ui);
 
+    $("#bookmarklet").removeClass("loading");
     bugHints.forEach(hints.plant);
     installHints(ui, hints);
     ui.commandManager.on('state-change', bugDisplay.update);
