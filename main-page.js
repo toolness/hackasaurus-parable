@@ -97,7 +97,7 @@ function buildPageMods(extraMods) {
   return mods;
 }
 
-$(window).ready(function() {  
+function init() {  
   var bugDisplay = BugDisplay(bugs);
 
   if (navigator.platform.match(/^Mac/))
@@ -120,4 +120,4 @@ $(window).ready(function() {
     ui.styleInfoOverlay.setPropertyNames(stylePropertiesToShow);
     ui.focusedOverlay.set($("#bookmarklet")[0]);
   };
-});
+}
