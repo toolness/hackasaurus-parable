@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title></title>
+<style>
+html, body {
+  font-family: Baskerville, Georgia, serif;
+}
+
+h1 {
+  font-size: 48pt;
+  font-weight: normal;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+section {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  padding: 10px;
+  text-align: center;
+}
+
+div#reset {
+  display: inline-block;
+  background: #f0f0f0;
+  cursor: pointer;
+  padding: 10px;
+}
+
+div#reset:hover {
+  color: white;
+  background: black;
+}
+
+#close-me {
+  background: black;
+  color: white;
+}
+
+#win {
+  background: lightgreen;
+}
+
+.keep-going {
+  font-size: 18pt;
+  font-style: italic;
+  color: green;
+}
+</style>
+<script src="../jquery.min.js"></script>
+<script>
+function maybeResetStorage() {
+  if (!('visits' in localStorage)) {
+    localStorage.visits = "";
+    localStorage.startTime = Date.now();
+  }
+}
+
+$(window).ready(function() {
+  var isFocused;
+  var pageName;
+  var match = window.location.search.match(/\?page=(.*)/);
+  var section;
+  if (match) {
+    pageName = match[1];
+    section = $("section#page-" + pageName);
+    if (window.location.hash == "#yay") {
+      window.location.hash = "";
+      window.location.search = "";
+      return;
+    }
+  } else {
+    pageName = "main";
+    section = $("section#main");
+    if (window.location.hash == "#yay")
+      window.location.hash = "";
+  }
+  section.show();
+
+  maybeResetStorage();
+  
+  document.title = $("h1", section).text();
+  
+  var ms = 50;
+  var updateID = setInterval(updateVisits, ms);
+  $("#reset").click(function() {
+    clearInterval(updateID);
+    localStorage.visits = "RESET";
+    $("#throbber").show();
+    setTimeout(function() {
+      delete localStorage.visits;
+      maybeResetStorage();
+      updateID = setInterval(updateVisits, ms);
+      $("#throbber").hide();
+    }, ms * 10);
+  });
+  
+  function stop() {
+    $("#reset").unbind();
+    $(window).unbind();
+    clearInterval(updateID);
+    section.hide();
+  }
+  
+  function invalidate() {
+    document.title = "close me";
+    $("#close-me").show();
+  }
+  
+  function visitPath() {
+    var path = [];
+    var lastItem;
+    localStorage.visits.split(" ").forEach(function(item) {
+      if (item.length) {
+        if (item !== lastItem)
+          path.push(item);
+        lastItem = item;
+      }
+    });
+    return path.join(" ");
+  }
+  
+  var FINAL_PATH = "1 2 3 4";
+  
+  function updateVisits() {
+    var path = visitPath();
+    
+    if (localStorage.visits == "RESET") {
+      stop();
+      invalidate();
+    } else if (path.length && FINAL_PATH.indexOf(path) == 0) {
+      if (path == FINAL_PATH) {
+        stop();
+        window.location.hash = "#yay";
+        if (isFocused) {
+          document.title = "you win!";
+          $("#win").fadeIn();
+        } else
+          invalidate();
+      } else {
+        if (isFocused && section.find(".keep-going").length == 0) {
+          var feedback = $("#templates .keep-going").clone();
+          section.append(feedback);
+          feedback.hide().fadeIn("slow");
+        }
+      }
+    }
+    
+    var secsPassed = (Date.now() - localStorage.startTime) / 1000;
+    var match = secsPassed.toString().match(/([0-9]+\.[0-9]).*/);
+    if (match)
+      secsPassed = match[1];
+    else
+      secsPassed = secsPassed.toString() + ".0";
+    $(".time").text(secsPassed);
+    
+    $("#visits").text(localStorage.visits);
+  }
+
+  $(window).focus(function() {
+    isFocused = true;
+    localStorage.visits += pageName + " ";
+    updateVisits();
+  });
+  
+  $(window).blur(function() {
+    isFocused = false;
+  });
+  
+  if (section.attr('id') == 'main')
+    $("#reset").click();
+});
+</script>
+<section id="main">
+  <h1>Challenge!</h1>
+  <p>Can you visit each of the following pages, in order, without coming back to this one?</p>
+  <ul>
+    <li><a href="?page=1">eenie</a></li>
+    <li><a href="?page=2">meenie</a></li>
+    <li><a href="?page=3">miney</a></li>
+    <li><a href="?page=4">moe</a></li>    
+  </ul>
+  <p><em>Hint:</em> Use <a href="http://support.mozilla.com/en-US/kb/Tabbed%20browsing?s=tabs&r=1&as=s">tabbed browsing</a>!</p>
+  <div id="reset">reset this challenge</div>
+  <p>Time elapsed: <span class="time"></span>s</p>
+  <img id="throbber" src="ajax-loader.gif" style="display: none">
+</section>
+<section id="page-1">
+  <h1>catch a</h1>
+</section>
+<section id="page-2">
+  <h1>tiger</h1>
+</section>
+<section id="page-3">
+  <h1>by its</h1>
+</section>
+<section id="page-4">
+  <h1>toe</h1>
+</section>
+<section id="close-me">
+  <h1>Please close this page.</h1>
+</section>
+<section id="win">
+  <h1>eenie meenie miney moe, catch a tiger by its toe</h1>
+  <p>You completed the challenge in <span class="time"></span> seconds! You are cool.</p>
+  <p>Want to <a href="?">try for a better time</a>?</p>
+</section>
+<div id="visits" style="display: none"></div>
+<div id="templates" style="display: none">
+  <div class="keep-going">Good, keep going!</div>
+</div>
