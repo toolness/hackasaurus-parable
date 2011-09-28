@@ -62,6 +62,8 @@ function BugDisplay(bugs) {
             fixedBefore[name] = true;
             if (bug.achievement)
               $(bug.achievement).delay(500).slideDown().delay(2500).slideUp();
+            if (bug.onAchieved)
+              bug.onAchieved();
           }
         }
       }

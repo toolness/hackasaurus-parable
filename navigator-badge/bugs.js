@@ -6,7 +6,10 @@ var bugs = {
     isFixed: function() {
       return (window.location.hash.indexOf($("#secret-hash").text()) != -1);
     },
-    achievement: "#address-bar-hacker"
+    achievement: "#address-bar-hacker",
+    onAchieved: function() {
+      $("#secret-hash").parent().slideUp();
+    }
   },
   selecter: {
     isFixed: function() {
@@ -25,18 +28,28 @@ var bugs = {
     isFixed: function() {
       return ($("#paster-field").val() == $("#select-me").text());
     },
-    achievement: "#paster"
+    achievement: "#paster",
+    onAchieved: function() {
+      $("#paster-field").parent().slideUp();
+      $("#select-me").slideUp();
+    }
   },
   massivePaster: {
     isFixed: function() {
       return ($("#massive-paster-field").val() == $("#massive").val());
     },
-    achievement: "#massive-paster"
+    achievement: "#massive-paster",
+    onAchieved: function() {
+      $("#massive-challenge").slideUp();
+    }
   },
   linker: {
     isFixed: function() {
       return ($("#linker-field").val() == $("#badgepic")[0].src);
     },
-    achievement: "#linker"
+    achievement: "#linker",
+    onAchieved: function() {
+      $("#linker-field").parent().slideUp();
+    }
   }
 };
