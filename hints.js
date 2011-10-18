@@ -47,13 +47,13 @@ var RemixDialogHintFilters = {
   },
   isOnAttributeValue: function(attr) {
     return function(ui, target) {
-      return ($(target).is(".attributes .value") &&
-              $(target).prev(".name").text() == attr);      
+      return ($(target).is(".attributes .value input") &&
+              $(target).parent().prev(".name").text() == attr);      
     };
   },
   isOnTextNode: function() {
     return function(ui, target) {
-      return $(target).is(".element .text");
+      return $(target).is(".element .text textarea");
     };
   },
   notFixed: HintFilters.notFixed
