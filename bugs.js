@@ -33,7 +33,7 @@ var bugs = {
   },
   brokenImage: {
     isFixed: function isBrokenImageFixed(context) {
-      return $("img#supergirl", context).attr("src") == "images/supergirl.png";
+      return $("img#supergirl", context).attr("src").match(/images\/supergirl\.png$/);
     },
     achievement: "#url-hacker.achievement"
   }
