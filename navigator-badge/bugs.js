@@ -11,6 +11,24 @@ var bugs = (function() {
     $("#win form").submit(function() {
       var email = $(this).find("input#email").val().trim();
       if (email) {
+        var baseURI = $('<a href="./"></a>')[0].href;
+        var assertion = {
+          "recipient": email,
+          "badge": {
+            "version": "0.0.1",
+            "name": "Web Navigator",
+            "image": $("#badge")[0].src,
+            "description": "Can operate a Web browser with celerity.",
+            "criteria": baseURI,
+            "issuer": {
+              "origin": baseURI,
+              "name": "Hackasaurus",
+              "org": "Experimental Badge Authority",
+              "contact": "rawr@hksr.us"
+            }
+          }
+        };
+        console.log(assertion);
         alert("Sorry, we haven't actually implemented this yet.");
       }
       return false;
