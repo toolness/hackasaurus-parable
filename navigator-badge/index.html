@@ -20,7 +20,7 @@ a {
   color: inherit;
 }
 
-#badgepic {
+#supergirl {
   float: right;
 }
 
@@ -28,6 +28,10 @@ textarea {
   width: 100%;
   border: 1px solid gray;
   color: gray;
+}
+
+#win {
+  text-align: center;
 }
 </style>
 <script src="../jquery.min.js"></script>
@@ -80,7 +84,7 @@ $(window).ready(function() {
 </div>
 
 <!-- Main page. -->
-
+<div id="challenge">
 <h1>Get Your Navigator Badge Here!</h1>
 
 <p>Do you have what it takes to surf the web like the pros? Let’s find out!</p>
@@ -115,6 +119,9 @@ Boom shackalack funky fresh, crackalackin.  Lorem ipsum shizznit sit amizzle, co
 <textarea id="massive-paster-field"></textarea>
 </div>
 
-<p><img src="http://farm7.static.flickr.com/6154/6141811332_bb25cbd5dd_m.jpg" id="badgepic">Finally, copy the URL of the picture on the right and paste it here: <input type="text" id="linker-field"></p>
+<p><img src="http://hackasaurus.org/images/goggles/supergirl.png" id="supergirl">Finally, copy the URL of the picture on the right and paste it here: <input type="text" id="linker-field"></p>
+</div>
 
-<p>Now, move onwards to the ultimate <a href="../tab-challenge/">tab challenge</a>!</p>
+<div id="win" style="display: none">
+  <img src="http://farm7.static.flickr.com/6154/6141811332_bb25cbd5dd_m.jpg" id="badge">
+</div>
