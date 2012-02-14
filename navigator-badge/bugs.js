@@ -29,7 +29,20 @@ var bugs = (function() {
           }
         };
         console.log(assertion);
-        alert("Sorry, we haven't actually implemented this yet.");
+        var deferred = jQuery.Deferred();
+        setTimeout(function() {
+          deferred.resolve();
+        }, 4000);
+        $("#win form").fadeOut(function() {
+          $("#throbber").fadeIn(function() {
+            deferred.done(function() {
+              $("#throbber").fadeOut(function() {
+                alert("Sorry, we haven't implemented this yet.");
+                $("#win form").fadeIn();
+              });
+            });
+          });
+        });
       }
       return false;
     });
