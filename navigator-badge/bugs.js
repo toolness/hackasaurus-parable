@@ -8,6 +8,13 @@ var bugs = (function() {
   function win() {
     $("#challenge").hide();
     $("#win").fadeIn();
+    $("#win form").submit(function() {
+      var email = $(this).find("input#email").val().trim();
+      if (email) {
+        alert("Sorry, we haven't actually implemented this yet.");
+      }
+      return false;
+    });
   }
   
   function achieve(cb) {

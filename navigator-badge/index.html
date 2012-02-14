@@ -7,7 +7,7 @@ p {
   clear: both;
 }
 
-input {
+#challenge input {
   border-top: none;
   border-left: none;
   border-right: none;
@@ -31,6 +31,36 @@ textarea {
 }
 
 #win {
+  text-align: center;
+}
+
+#badge {
+  padding-top: 50px;
+  padding-bottom: 40px;
+}
+
+#win input {
+  font-family: inherit;
+  font-size: large;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+#win input#submit {
+  display: block;
+  width: 30%;
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+#win input#submit:hover {
+  color: white;
+  background: darkgreen;
+}
+
+#win input#email {
+  width: 50%;
   text-align: center;
 }
 </style>
@@ -123,5 +153,10 @@ Boom shackalack funky fresh, crackalackin.  Lorem ipsum lol sit amizzle, consect
 </div>
 
 <div id="win" style="display: none">
-  <img src="http://farm7.static.flickr.com/6154/6141811332_bb25cbd5dd_m.jpg" id="badge">
+  <img src="navigator-badge.png" id="badge">
+  <p>Congratulations! If you'd like to send this badge to your backpack, just fill out the form below.</p>
+  <form>
+    <input type="text" id="email" placeholder="e-mail address">
+    <input type="submit" value="Send To Backpack" id="submit">
+  </form>
 </div>
