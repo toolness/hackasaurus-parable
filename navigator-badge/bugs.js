@@ -43,7 +43,8 @@ var bugs = (function() {
             });
           });
         });
-      }
+      } else
+        alert("Please provide your e-mail address.");
       return false;
     });
   }
