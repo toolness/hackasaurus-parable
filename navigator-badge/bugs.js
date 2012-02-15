@@ -46,6 +46,8 @@ var bugs = (function() {
                 var url = JSON.parse(deferred.responseText)['published-url'];
                 var iframe = issuer.sendIt(url, "http://localhost:8888");
                 $(document.body).append(iframe);
+                $(iframe).hide();
+                alert("The badge is now in your backpack!");
                 //$("#win form").fadeIn();
               });
             });
