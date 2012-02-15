@@ -29,16 +29,24 @@ var bugs = (function() {
           }
         };
         console.log(assertion);
-        var deferred = jQuery.Deferred();
-        setTimeout(function() {
-          deferred.resolve();
-        }, 4000);
+        var deferred = jQuery.ajax({
+          type: 'POST',
+          url: "http://hackpub.hackasaurus.org/publish",
+          data: {
+            'json': JSON.stringify(assertion),
+            'original-url': baseURI,
+          },
+          crossDomain: true
+        });
         $("#win form").fadeOut(function() {
           $("#throbber").fadeIn(function() {
             deferred.done(function() {
               $("#throbber").fadeOut(function() {
-                alert("Sorry, we haven't implemented this yet.");
-                $("#win form").fadeIn();
+                // TODO: This code is temporary.
+                var url = JSON.parse(deferred.responseText)['published-url'];
+                var iframe = issuer.sendIt(url, "http://localhost:8888");
+                $(document.body).append(iframe);
+                //$("#win form").fadeIn();
               });
             });
           });
