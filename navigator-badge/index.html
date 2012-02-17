@@ -67,7 +67,22 @@ textarea {
 
 <!-- TODO: This code is temporary. -->
 <script src="http://mozilla.github.com/jschannel/src/jschannel.js"></script>
-<script src="http://localhost:8888/js/issuer.js"></script>
+<script src="http://localhost:8888/js/issuer.js" class="issuer"></script>
+<script>
+$(window).ready(function() {
+  if (typeof(issuer) == "undefined") {
+    $("script.issuer").remove();
+    var script = document.createElement('script');
+    script.setAttribute('src', "http://stage.openbadges.org/js/issuer.js");
+    script.setAttribute('class', 'issuer');
+    document.body.appendChild(script);
+  }
+  var src = $("script.issuer").attr("src");
+  var a = document.createElement('a');
+  a.setAttribute('href', src);
+  $("script.issuer").attr('data-root', a.protocol + '//' + a.host);
+});
+</script>
 
 <script>
 $(window).ready(function() {
@@ -155,7 +170,7 @@ Boom shackalack funky fresh, crackalackin.  Lorem ipsum lol sit amizzle, consect
 </div>
 
 <div id="win" style="display: none">
-  <img src="navigator-badge.png" id="badge">
+  <img src="http://toolness.github.com/hackasaurus-parable/navigator-badge/navigator-badge.png" id="badge">
   <p>Congratulations! If you'd like to send this badge to your backpack, just fill out the form below.</p>
   <form>
     <input type="text" id="email" placeholder="E-mail Address">

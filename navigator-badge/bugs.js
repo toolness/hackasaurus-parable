@@ -44,7 +44,8 @@ var bugs = (function() {
               $("#throbber").fadeOut(function() {
                 // TODO: This code is temporary.
                 var url = JSON.parse(deferred.responseText)['published-url'];
-                var iframe = issuer.sendIt(url, "http://localhost:8888");
+                var root = $("script.issuer").attr('data-root');
+                var iframe = issuer.sendIt(url, root);
                 $(document.body).append(iframe);
                 $(iframe).hide();
                 alert("The badge is now in your backpack!");
@@ -69,7 +70,7 @@ var bugs = (function() {
     }
   }
   
-  //setTimeout(win, 100);
+  //setTimeout(win, 500);
   
   return {
     addressBarHacker: {
