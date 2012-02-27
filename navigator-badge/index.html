@@ -67,20 +67,15 @@ textarea {
 
 <!-- TODO: This code is temporary. -->
 <script src="http://mozilla.github.com/jschannel/src/jschannel.js"></script>
-<script src="http://localhost:8888/js/issuer.js" class="issuer"></script>
+<script src="http://localhost:8888/issuer.js" class="issuer"></script>
 <script>
 $(window).ready(function() {
-  if (typeof(issuer) == "undefined") {
+  if (typeof(OpenBadges) == "undefined") {
     $("script.issuer").remove();
     var script = document.createElement('script');
-    script.setAttribute('src', "http://stage.openbadges.org/js/issuer.js");
-    script.setAttribute('class', 'issuer');
+    script.setAttribute('src', "http://beta.openbadges.org/issuer.js");
     document.body.appendChild(script);
   }
-  var src = $("script.issuer").attr("src");
-  var a = document.createElement('a');
-  a.setAttribute('href', src);
-  $("script.issuer").attr('data-root', a.protocol + '//' + a.host);
 });
 </script>
 

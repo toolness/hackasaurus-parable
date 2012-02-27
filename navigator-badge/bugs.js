@@ -44,11 +44,9 @@ var bugs = (function() {
               $("#throbber").fadeOut(function() {
                 // TODO: This code is temporary.
                 var url = JSON.parse(deferred.responseText)['published-url'];
-                var root = $("script.issuer").attr('data-root');
-                var iframe = issuer.sendIt(url, root);
-                $(document.body).append(iframe);
-                $(iframe).hide();
-                alert("The badge is now in your backpack!");
+                OpenBadges.issue([url], function(errors, successes) {
+                  console.log("errors", errors, "successes", successes);
+                });
                 //$("#win form").fadeIn();
               });
             });
