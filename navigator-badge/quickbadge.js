@@ -65,7 +65,10 @@ var QuickBadge = (function() {
     issue: function(url, options) {
       var issue = jQuery.Deferred();
       OpenBadges.issue([url], function(errors, successes) {
-        issue.resolve(errors, successes);
+        if (errors.length)
+          issue.reject(errors[0]);
+        else
+          issue.resolve(successes[0]);
       });
       return attachCallbacks(issue, options);
     }
