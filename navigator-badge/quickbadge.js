@@ -18,6 +18,15 @@ var QuickBadge = (function() {
       return re.test(email);
   }
 
+  function attachCallbacks(deferred, callbacks) {
+    callbacks = callbacks || {};
+    if (callbacks.success)
+      deferred.done(callbacks.success);
+    if (callbacks.error)
+      deferred.fail(callbacks.error);
+    return deferred;
+  }
+
   return {
     validateEmail: validateEmail,
     publish: function(options) {
@@ -51,14 +60,14 @@ var QuickBadge = (function() {
           publish.reject.apply(publish, arguments);
         }
       });
-      return publish;
+      return attachCallbacks(publish, options);
     },
-    issue: function(url) {
+    issue: function(url, options) {
       var issue = jQuery.Deferred();
       OpenBadges.issue([url], function(errors, successes) {
         issue.resolve(errors, successes);
       });
-      return issue;
+      return attachCallbacks(issue, options);
     }
   };
 })();
