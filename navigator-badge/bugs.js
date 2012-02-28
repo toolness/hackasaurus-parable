@@ -33,9 +33,20 @@ var bugs = (function() {
         });
         $("#win form").fadeOut(function() {
           $("#throbber").fadeIn(function() {
+            publish.fail(function() {
+              alert("Sorry, an error occurred. Please try again later.");
+              $("#win form").show();
+              $("#throbber").hide();
+            });
             publish.done(function(url) {
               $("#throbber").fadeOut();
               QuickBadge.issue(url).done(function(errors, successes) {
+                if (successes.length)
+                  $("#win .instructions").hide();
+                else {
+                  $("#win form").show();
+                  $("#throbber").hide();
+                }
                 console.log("errors", errors, "successes", successes);
               });
             });
@@ -57,7 +68,7 @@ var bugs = (function() {
     }
   }
   
-  setTimeout(win, 500);
+  //setTimeout(win, 1000);
   
   return {
     addressBarHacker: {
