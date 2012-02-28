@@ -23,7 +23,11 @@ var bugs = (function() {
               "description": "Can operate a Web browser with celerity.",
               "criteria": baseURI,
               "issuer": {
-                "origin": "http://poof.hksr.us/",
+                // TODO: The 'origin' isn't checked right now,
+                // so we will take advantage of this to use an
+                // authoritative domain that's good for
+                // demo purposes.
+                "origin": "http://navigator-badge.hackasaurus.org/",
                 "name": "Hackasaurus",
                 "org": "Experimental Badge Authority",
                 "contact": "rawr@hksr.us"
