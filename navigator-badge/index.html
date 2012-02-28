@@ -65,18 +65,7 @@ textarea {
 <script src="bugs.js"></script>
 <script src="../main-page.js"></script>
 <script src="quickbadge.js"></script>
-<script src="http://localhost:8888/issuer.js" class="issuer"></script>
-<script>
-$(window).ready(function() {
-  if (typeof(OpenBadges) == "undefined") {
-    $("script.issuer").remove();
-    var script = document.createElement('script');
-    script.setAttribute('src', "http://beta.openbadges.org/issuer.js");
-    document.body.appendChild(script);
-  }
-});
-</script>
-
+<script src="http://beta.openbadges.org/issuer.js"></script>
 <script>
 $(window).ready(function() {
   $("#paster-field, #linker-field, #massive-paster-field").val('');
@@ -90,6 +79,11 @@ $(window).ready(function() {
   }, 100);
 });
 </script>
+
+<!-- For development, try loading the issuer API from the dev server. If 
+     it fails, we'll just use the non-development issuer API from the
+     script tag above. -->
+<script src="http://localhost:8888/issuer.js"></script>
 
 <!-- The help bar at the top of the page. -->
 
