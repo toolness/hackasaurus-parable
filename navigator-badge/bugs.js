@@ -40,14 +40,15 @@ var bugs = (function() {
             });
             publish.done(function(url) {
               $("#throbber").fadeOut();
-              QuickBadge.issue(url).done(function(errors, successes) {
-                if (successes.length)
+              QuickBadge.issue(url, {
+                success: function() {
                   $("#win .instructions").hide();
-                else {
+                },
+                error: function(info) {
                   $("#win form").show();
                   $("#throbber").hide();
+                  console.log("error", info);
                 }
-                console.log("errors", errors, "successes", successes);
               });
             });
           });
