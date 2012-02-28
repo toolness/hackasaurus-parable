@@ -10,50 +10,39 @@ var bugs = (function() {
     $("#win").fadeIn();
     $("#win form").submit(function() {
       var email = $(this).find("input#email").val().trim();
-      if (email) {
+      if (QuickBadge.validateEmail(email)) {
         var baseURI = $('<a href="./"></a>')[0].href;
-        var assertion = {
-          "recipient": email,
-          "badge": {
-            "version": "0.0.1",
-            "name": "Web Navigator",
-            "image": $("#badge")[0].src,
-            "description": "Can operate a Web browser with celerity.",
-            "criteria": baseURI,
-            "issuer": {
-              "origin": baseURI,
-              "name": "Hackasaurus",
-              "org": "Experimental Badge Authority",
-              "contact": "rawr@hksr.us"
+        var publish = QuickBadge.publish({
+          service: "http://hackpub.hackasaurus.org/publish",
+          assertion: {
+            "recipient": email,
+            "badge": {
+              "version": "0.0.1",
+              "name": "Web Navigator",
+              "image": $("#badge")[0].src,
+              "description": "Can operate a Web browser with celerity.",
+              "criteria": baseURI,
+              "issuer": {
+                "origin": "http://poof.hksr.us/",
+                "name": "Hackasaurus",
+                "org": "Experimental Badge Authority",
+                "contact": "rawr@hksr.us"
+              }
             }
           }
-        };
-        console.log(assertion);
-        var deferred = jQuery.ajax({
-          type: 'POST',
-          url: "http://hackpub.hackasaurus.org/publish",
-          data: {
-            'json': JSON.stringify(assertion),
-            'original-url': baseURI,
-          },
-          crossDomain: true
         });
         $("#win form").fadeOut(function() {
           $("#throbber").fadeIn(function() {
-            deferred.done(function() {
-              $("#throbber").fadeOut(function() {
-                // TODO: This code is temporary.
-                var url = JSON.parse(deferred.responseText)['published-url'];
-                OpenBadges.issue([url], function(errors, successes) {
-                  console.log("errors", errors, "successes", successes);
-                });
-                //$("#win form").fadeIn();
+            publish.done(function(url) {
+              $("#throbber").fadeOut();
+              QuickBadge.issue(url).done(function(errors, successes) {
+                console.log("errors", errors, "successes", successes);
               });
             });
           });
         });
       } else
-        alert("Please provide your e-mail address.");
+        alert("Please provide a valid e-mail address.");
       return false;
     });
   }
@@ -68,7 +57,7 @@ var bugs = (function() {
     }
   }
   
-  //setTimeout(win, 500);
+  setTimeout(win, 500);
   
   return {
     addressBarHacker: {
