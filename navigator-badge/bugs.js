@@ -13,7 +13,7 @@ var bugs = (function() {
       if (QuickBadge.validateEmail(email)) {
         var baseURI = $('<a href="./"></a>')[0].href;
         var publish = QuickBadge.publish({
-          service: "http://hackpub.hackasaurus.org/publish",
+          service: "http://hackpub.herokuapp.com/publish",
           assertion: {
             "recipient": email,
             "badge": {
