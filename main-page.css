@@ -93,7 +93,7 @@ h1 {
 div.drop-cap {
   font-size: 48px;
   margin-top: -6px;
-  float: right;
+  float: left;
 }
 
 img#hackasaur {
@@ -113,6 +113,6 @@ img#supergirl {
 .curtain {
   position: absolute;
   width: 640px;
-  height: 250px;
+  height: 0px;
   background-color: white;
 }
