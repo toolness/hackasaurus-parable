@@ -13,7 +13,7 @@ var bugs = (function() {
       if (QuickBadge.validateEmail(email)) {
         var baseURI = $('<a href="./"></a>')[0].href;
         var publish = QuickBadge.publish({
-          service: "http://hackpub.herokuapp.com/publish",
+          service: "https://hackpub.herokuapp.com/publish",
           assertion: {
             "recipient": email,
             "badge": {
@@ -27,7 +27,7 @@ var bugs = (function() {
                 // so we will take advantage of this to use an
                 // authoritative domain that's good for
                 // demo purposes.
-                "origin": "http://navigator-badge.hackasaurus.org/",
+                "origin": "https://navigator-badge.hackasaurus.org/",
                 "name": "Hackasaurus",
                 "org": "Experimental Badge Authority",
                 "contact": "rawr@hksr.us"
